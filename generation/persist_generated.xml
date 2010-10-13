@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<model>
+	<table name="arancel" class="EntityArancel" >
+		<column Field="aran_ID" Type="int(11)" Null="NO" Key="PRI" Default="" Extra="auto_increment" />
+		<column Field="FK_colegios_colegio_ID" Type="varchar(20)" Null="NO" Key="" Default="" Extra="" />
+		<column Field="FK_curso" Type="varchar(10)" Null="NO" Key="" Default="" Extra="" />
+		<column Field="aran_monto" Type="double" Null="YES" Key="" Default="" Extra="" />
+		<column Field="aran_anio" Type="varchar(10)" Null="NO" Key="" Default="" Extra="" />
+	</table>
+	<table name="becas" class="EntityBecas" >
+		<column Field="beca_ID" Type="int(11)" Null="NO" Key="PRI" Default="" Extra="auto_increment" />
+		<column Field="FK_rut" Type="varchar(20)" Null="NO" Key="" Default="" Extra="" />
+		<column Field="FK_colegios_colegio_ID" Type="varchar(20)" Null="NO" Key="" Default="" Extra="" />
+		<column Field="beca_anio" Type="varchar(10)" Null="NO" Key="" Default="" Extra="" />
+		<column Field="beca_porcentaje" Type="int(11)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="beca_detalle" Type="varchar(40)" Null="YES" Key="" Default="" Extra="" />
+	</table>
+	<table name="colegios" class="EntityColegios" >
+		<column Field="colegio_ID" Type="varchar(20)" Null="NO" Key="PRI" Default="" Extra="" />
+		<column Field="nombre" Type="varchar(30)" Null="NO" Key="" Default="" Extra="" />
+		<column Field="FK_db_db_ID" Type="int(11)" Null="NO" Key="" Default="" Extra="" />
+		<column Field="direccion" Type="varchar(40)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="telefono" Type="varchar(30)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="rbd" Type="varchar(20)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="col_director" Type="varchar(60)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="col_comuna" Type="varchar(40)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="col_url" Type="varchar(30)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="col_decreto" Type="varchar(10)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="col_anio" Type="varchar(10)" Null="YES" Key="" Default="" Extra="" />
+	</table>
+	<table name="db" class="EntityDb" >
+		<column Field="db_ID" Type="int(11)" Null="NO" Key="PRI" Default="" Extra="auto_increment" />
+		<column Field="bd" Type="set('dor','abello','edupac')" Null="NO" Key="" Default="" Extra="" />
+		<column Field="anio" Type="varchar(10)" Null="NO" Key="" Default="" Extra="" />
+	</table>
+	<table name="horarios" class="EntityHorarios" >
+		<column Field="hrs_ID" Type="int(11)" Null="NO" Key="PRI" Default="" Extra="auto_increment" />
+		<column Field="FK_personal_pers_ID" Type="int(11)" Null="NO" Key="MUL" Default="" Extra="" />
+		<column Field="hrs_horario" Type="text" Null="YES" Key="" Default="" Extra="" />
+		<column Field="hrs_anio" Type="varchar(4)" Null="NO" Key="" Default="" Extra="" />
+		<column Field="audit_fecha" Type="date" Null="YES" Key="" Default="" Extra="" />
+		<column Field="audit_usuario" Type="varchar(40)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="audit_sistema" Type="varchar(100)" Null="YES" Key="" Default="" Extra="" />
+	</table>
+	<table name="logs" class="EntityLogs" >
+		<column Field="log_ID" Type="int(11)" Null="NO" Key="PRI" Default="" Extra="auto_increment" />
+		<column Field="ip" Type="varchar(20)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="hora" Type="time" Null="YES" Key="" Default="" Extra="" />
+		<column Field="fecha" Type="date" Null="YES" Key="" Default="" Extra="" />
+		<column Field="tipo" Type="varchar(20)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="login" Type="varchar(40)" Null="YES" Key="" Default="" Extra="" />
+	</table>
+	<table name="personal" class="EntityPersonal" >
+		<column Field="pers_ID" Type="int(11)" Null="NO" Key="PRI" Default="" Extra="auto_increment" />
+		<column Field="FK_personas_per_ID" Type="int(11)" Null="NO" Key="MUL" Default="" Extra="" />
+		<column Field="pers_tipo" Type="enum('docente','administrativo')" Null="YES" Key="" Default="" Extra="" />
+		<column Field="pers_anio" Type="varchar(4)" Null="NO" Key="" Default="" Extra="" />
+		<column Field="audit_fecha" Type="date" Null="YES" Key="" Default="" Extra="" />
+		<column Field="audit_usuario" Type="varchar(40)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="audit_sistema" Type="varchar(100)" Null="YES" Key="" Default="" Extra="" />
+	</table>
+	<table name="personas" class="EntityPersonas" >
+		<column Field="per_ID" Type="int(11)" Null="NO" Key="PRI" Default="" Extra="" />
+		<column Field="per_nombres" Type="varchar(30)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="per_apellidop" Type="varchar(20)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="per_apellidom" Type="varchar(20)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="per_rut" Type="varchar(20)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="per_fono" Type="varchar(20)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="per_direccion" Type="varchar(50)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="per_titulo" Type="varchar(50)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="per_codigo_autorizacion" Type="varchar(20)" Null="YES" Key="" Default="" Extra="" />
+		<column Field="per_estado_titulo" Type="enum('titulado','sin_titulo','proceso_titulacion')" Null="NO" Key="" Default="" Extra="" />
+	</table>
+	<table name="usuarios" class="EntityUsuarios" >
+		<column Field="usr_ID" Type="int(11)" Null="NO" Key="PRI" Default="" Extra="auto_increment" />
+		<column Field="FK_colegios_colegio_ID" Type="varchar(20)" Null="NO" Key="MUL" Default="" Extra="" />
+		<column Field="login" Type="varchar(40)" Null="NO" Key="" Default="" Extra="" />
+		<column Field="password" Type="varchar(40)" Null="NO" Key="" Default="" Extra="" />
+		<column Field="tipo" Type="set('profesor','secretaria','inspector','alumno','super_usuario','utp','matriculas')" Null="NO" Key="" Default="" Extra="" />
+	</table>
+</model>
