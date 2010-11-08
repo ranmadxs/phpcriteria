@@ -12,6 +12,11 @@ include_once 'DBSQLInterface.php';
 class MySQL_DB implements DBSQLInterface{
 
    private static $instancia;
+   private $dataBase;
+
+   public function getDataBase() {
+       return $this->dataBase;
+   }
 
    public static function instance()
    {
@@ -22,14 +27,18 @@ class MySQL_DB implements DBSQLInterface{
       return self::$instancia;
    }
 
-    public function DBConnect(&$dbh, $db = null)
+    public function DBConnect(&$dbh, &$db = null)
     {
 
             $dbh = mysql_connect (CRITERIA_DB_HOST, CRITERIA_DB_USER, CRITERIA_DB_PASSWORD) or die ('No se puede conectar a la base de datos, la razón es: ' . mysql_error());
-            if ($db != null)
+            if ($db != null){
                     mysql_select_db($db);
-            else
+                    $this->dataBase = $db;
+            }
+            else{
                     mysql_select_db(CRITERIA_DB_DEFAUTL);
+                    $db = $this->dataBase = CRITERIA_DB_DEFAUTL;
+            }
     }
 
     public function DBQuery($SQL_query, $dbh) {

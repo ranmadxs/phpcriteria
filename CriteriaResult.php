@@ -61,7 +61,7 @@ class CriteriaResult {
     }
 
     /*
-     * Función que retorna un arreglo de objetos
+     * Función que retorna un objeto único
      * @return Object
      */
     public function uniqueResult(){

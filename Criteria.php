@@ -1,17 +1,28 @@
 <?php
 include_once 'config-inc.php';
 include_once 'CriteriaResult.php';
+include_once 'CriteriaProperty.php';
 include_once 'conection/DBSQL.php';
-//include_once(MAIN_PATH."phpLib/MySQL_Lib.php");
+include_once 'CriteriaEntityDescriptors.php';
+include_once 'CriteriaEntityMgr.php';
 /**
- * Description of criteria
+ * Descripción de criteria
+ * Framework que permite abstraer la capa de persistencia de datos, modelando en objetos sus entidades.
+ * Criteria es un ORM (Objeto de Modelo Relacional) que nos permite efectuar consultas
+ * a la base de datos sin necesidad de efectuar consultas directas en SQL, facilitandonos
+ * de esta manera el trabajo.
+ * @version 1.1 07/Nov/2010
+ * @uses
+ * $criteria = new Criteria();
+ * $entity = new Entity();
+ * $criteria->createCriteria($entity);
+ * $criteria->add(Restrictions::ge("field", value));
+ * $criteria->lista();
  *
  * @author edgar
  */
+class Criteria extends CriteriaResult {
 
-
-class Criteria extends CriteriaResult{
-    //put your code here
     private $dbh;
     private $xml;
     private $array_order;
@@ -22,7 +33,7 @@ class Criteria extends CriteriaResult{
     private $table;
     private $flagCreateCtriteria;
     private $array_restrictions;
-    private $object;
+    private $objectClass;
 
     public function getSQL() {
         return $this->SQL;
@@ -33,11 +44,10 @@ class Criteria extends CriteriaResult{
         return $this;
     }
 
-    public function execute($queryType = CriteriaProperty::QUERY_SQL_SELECT){
+    public function execute($queryType = CriteriaProperty::QUERY_SQL_SELECT) {
         $this->result = MySQL_DB::instance()->DBQuery($this->SQL, $this->dbh);
-
         try {
-            if(mysql_affected_rows() > 0 && $queryType != CriteriaProperty::QUERY_SQL_UPDATE)
+            if(mysql_affected_rows() > 0 && $queryType != CriteriaProperty::QUERY_SQL_UPDATE && $queryType != CriteriaProperty::QUERY_SQL_INSERT)
                 $this->setNumRows(mysql_num_rows($this->result));
             $this->setInsertID(mysql_insert_id($this->dbh));
         } catch (Exception $e) {
@@ -47,18 +57,17 @@ class Criteria extends CriteriaResult{
         return $this;
     }
 
-    public function createCriteria($object){		
+    public function createCriteria($object) {
         $oReflectionClass = new ReflectionClass($object);
         $properties = $oReflectionClass->getProperties();
-        $this->className = $oReflectionClass->getName();    
-        $this->table = $this->findTable($this->className);
+        $this->className = $oReflectionClass->getName();
+        $this->table = CriteriaEntityMgr::instance()->findTable($this->className);
         $this->flagCreateCtriteria = true;
-        $this->object = $object;
+        $this->objectClass = $object;
         $this->SQL = MySQL_DB::instance()->DBSQLSelect($this->table, null, $this->array_restrictions, $this->array_order, $this->type_order, true);
-
     }
 
-    public function addCriteria($restrictions){
+    public function add($restrictions) {
         if(!$this->flagCreateCtriteria)
             throw new Exception('Necesita inicializar el criteria');
 
@@ -69,40 +78,42 @@ class Criteria extends CriteriaResult{
         $this->SQL = MySQL_DB::instance()->DBSQLSelect($this->table, null, $this->array_restrictions, $this->array_order, $this->type_order, true);
     }
 
-    public function lista(){
-        if($this->flagCreateCtriteria){
+    public function lista() {
+
+        if($this->flagCreateCtriteria) {
             $this->execute();
-            Esto de abajo hay que corregir el reflecction, pero debe funcionar
-
-           $oReflectionClass = new ReflectionClass($this->object);
-           $properties = $oReflectionClass->getProperties();
-           $class = $oReflectionClass->getName();
-
-
-            if($this->getNumRows() > 1){
-                while ($row = MySQL_DB::instance()->DBFetchArray($this->result)){
+            $oReflectionClass = new ReflectionClass($this->objectClass);
+            $properties = $oReflectionClass->getProperties();
+            $class = $oReflectionClass->getName();
+            if($this->getNumRows() > 0) {
+                while ($row = MySQL_DB::instance()->DBFetchArray($this->result)) {
                     $object_new = $oReflectionClass->newInstance($oReflectionClass);
                     $object_new = $this->iterateProperty($class, $object_new, $row, $properties);
                     $list[] = $object_new;
                 }
-            $this->setList($list);
+                $this->setList($list);
             }
-            
         }
-        $this->listResult();
+        return $this->listResult();
     }
 
-    protected function getDatabaseTables(){
-        $this->setSQL("SHOW TABLES")->execute();
+    public function getDatabaseTables() {
+        $this->setSQL("SHOW TABLE STATUS FROM ".$this->db)->execute();
         return $this->getArrayList();
     }
 
-    protected function getDescTable($table){
-        $this->setSQL("DESC ".$table)->execute();
+    protected function showCreateTable($tableName){
+        $this->setSQL("SHOW CREATE TABLE ".$tableName)->execute();
         return $this->getArrayList();
     }
 
-    public function setOrder($atribute, $type_order = CriteriaProperty::ORDER_ASC){
+
+    public function getDescTable($tableName) {
+        $this->setSQL("DESC ".$tableName)->execute();
+        return $this->getArrayList();
+    }
+
+    public function setOrder($atribute, $type_order = CriteriaProperty::ORDER_ASC) {
         if(!is_array($this->array_order))
             $this->array_order = array("1"=>$atribute);
         else
@@ -116,50 +127,62 @@ class Criteria extends CriteriaResult{
         $this->type_order = $type_order;
     }
 
-    function __construct($db = null) {
+    function __construct($db = null) {        
         MySQL_DB::instance()->DBConnect($this->dbh, $db);
-        $this->xml = simplexml_load_file(CRITERIA_PATH_XML_PERSIST);
+        $this->db = $db;
+        //$this->xml = simplexml_load_file(CRITERIA_PATH_XML_PERSIST);
     }
-    
-    public function begin(){
+
+    public function begin() {
         MySQL_DB::instance()->DBBegin($this->dbh);
         //DBBegin($this->dbh);
         return $this;
     }
 
-    public function commit(){
+    public function commit() {
         MySQL_DB::instance()->DBCommit($this->dbh);
         return $this;
     }
-    
-    public function rollBack(){
+
+    public function rollBack() {
         MySQL_DB::instance()->DBRollback($this->dbh);
         return $this;
     }
 
-    public function persist($object){
-        
-    }
-
-    public function merge($object){
+    public function persist($object) {
         $oReflectionClass = new ReflectionClass($object);
         $properties = $oReflectionClass->getProperties();
-        $class = $oReflectionClass->getName();
-        $pks = $this->findPkXML($class);
+        $this->className = $class = $oReflectionClass->getName();
+        $this->table = CriteriaEntityMgr::instance()->findTable($this->className);
+        foreach ($properties as $key => $reflectionProperty)
+            $datos_set[$reflectionProperty->getName()] = $reflectionProperty->getValue($object);
+        $this->SQL = MySQL_DB::instance()->DBSQLInsert($datos_set, $this->table);
+        $this->execute(CriteriaProperty::QUERY_SQL_INSERT);
+        return $this;
+    }
+
+    public function merge($object) {
+        $oReflectionClass = new ReflectionClass($object);
+        $properties = $oReflectionClass->getProperties();
+        $this->className = $class = $oReflectionClass->getName();
+        $pks = CriteriaEntityMgr::instance()->findPks($this->className);
         $object_old = $oReflectionClass->newInstance($oReflectionClass);
         foreach ($pks as $key_pk => $name_pk) {
             $prop = new ReflectionProperty($class, $name_pk);
             $value = $prop->getValue($object);
+            if(strlen($value) == 0)
+                Throw new Exception ("La clave primaria ".$name_pk." viene nula");
             $prop->setValue($object_old, $value);
-            $datos_where[$name_pk] = $value;            
+            $datos_where[$name_pk] = $value;
         }
+
         $this->find($object_old);
-        
-        if(!$this->uniqueResult()){
-           $this->rollBack();
-           throw new Exception('El objeto '.$class." no tiene resultado unico");
+
+        if(!$this->uniqueResult()) {
+            $this->rollBack();
+            throw new Exception('El objeto '.$class." no tiene resultado unico");
         }
-        $table = $this->findTable($class);
+        $table = $this->table = CriteriaEntityMgr::instance()->findTable($this->className);
         $oReflectionClass = new ReflectionClass($object);
         $properties = $oReflectionClass->getProperties();
         foreach ($properties as $key => $reflectionProperty)
@@ -174,82 +197,41 @@ class Criteria extends CriteriaResult{
      * @param <type> Object
      * @return <type> CriteriaResult
      */
-    public function find($object){
+    public function find($object) {
         $oReflectionClass = new ReflectionClass($object);
         //$properties = $oReflectionClass->getProperties(ReflectionProperty::IS_PUBLIC);
         $properties = $oReflectionClass->getProperties();
-        $class = $oReflectionClass->getName();
-        //dpr($properties);
+        $this->className = $class = $oReflectionClass->getName();
 
-        foreach ($properties as $key => $reflectionProperty) 
+        foreach ($properties as $key => $reflectionProperty)
             $datos_where[$reflectionProperty->getName()] = $reflectionProperty->getValue($object);
-
-//            $prop = new ReflectionProperty($class, $reflectionProperty->getName());
-//            $prop->setAccessible(true); /* As of PHP 5.3.0 */
-            //var_dump($prop->getValue($obj)); // int(2)
-
         $this->setList(null);
         $this->setObject(null);
-
-        $table = $this->findTable($class);
+        $table = $this->table = CriteriaEntityMgr::instance()->findTable($this->className);
         $this->SQL = MySQL_DB::instance()->DBSQLSelect($table, null, $datos_where, $this->array_order, $this->type_order);
-        //$this->SQL = DBSQLSelect($table, null, $datos_where, $this->array_order, $this->type_order);
         $this->execute();
-        //$this->result = DBQuery($this->SQL, $this->dbh);
-        if($this->getNumRows() == 1){
+        if($this->getNumRows() == 1) {
             $row = MySQL_DB::instance()->DBFetchArray($this->result);
             $object = $this->iterateProperty($class, $object, $row, $properties);
             $this->setObject($object);
         }
-
-        if($this->getNumRows() > 1){
-            while ($row = MySQL_DB::instance()->DBFetchArray($this->result)){
+        if($this->getNumRows() > 1) {
+            while ($row = MySQL_DB::instance()->DBFetchArray($this->result)) {
                 $object_new = $oReflectionClass->newInstance($oReflectionClass);
                 $object_new = $this->iterateProperty($class, $object_new, $row, $properties);
                 $list[] = $object_new;
             }
             $this->setList($list);
         }
-
         return $this;
     }
 
-    private function iterateProperty($class, $object, $row, $properties){
-            foreach ($properties as $key => $reflectionProperty){
-                $prop = new ReflectionProperty($class, $reflectionProperty->getName());
-                $prop->setValue($object, $row[$reflectionProperty->getName()]);
-            }
-            return $object;
-    }
-
-    private function findPkXML($class){
-        foreach ($this->xml->table as $key => $dataXML) {
-            $column = $dataXML->column;
-            $atributes_table = $dataXML->attributes();
-            if($atributes_table->class == $class){
-                foreach ($column as $key_p => $data) {
-                    $atributes = $data->attributes();
-                    $pkKey = (string) $atributes->Key;
-                    if(strlen($pkKey)>0){
-                        $atributes_column[] = (string) $atributes->Field;
-                    }
-                }
-                return $atributes_column;
-            }
+    private function iterateProperty($class, $object, $row, $properties) {
+        foreach ($properties as $key => $reflectionProperty) {
+            $prop = new ReflectionProperty($class, $reflectionProperty->getName());
+            $prop->setValue($object, $row[$reflectionProperty->getName()]);
         }
-        $this->rollBack();
-        throw new Exception('La clase '.$class." no tiene definidas claves");
-    }
-
-    private function findTable($class){
-        foreach ($this->xml->table as $key => $dataXML) {
-            $atributes = $dataXML->attributes();
-            if($atributes->class == $class){
-                return (string) $atributes->name;
-            }
-        }
-        $this->rollBack();
-        throw new Exception('La clase '.$class." no se encuentra en el contexto de persistencia del xml");
+        return $object;
     }
 
 }

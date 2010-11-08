@@ -9,16 +9,17 @@
  * @author edgar
  */
 interface DBSQLInterface {
-    public function DBConnect(&$dbh, $db = null);
-    public function DBQuery($SQL_query, $dbh);
-    public function DBCambioPermanente($anio);
-    public function DBFetchArray($result);
-    public function DBError($sentencia);
-    public function DBBegin(&$dbh);
-    public function DBCommit(&$dbh);
-    public function DBRollback(&$dbh);
-    public function DBSQLSelect($table, $array_atributos = null, $datos_where = null, $array_order = null, $type_order = "");
-    public function DBSQLInsert($array, $table);
-    public function DBSQLUpdate($datos_set, $datos_where, $table, $autocompleteNull=false);
+    function DBConnect(&$dbh, &$db = null);
+    function DBQuery($SQL_query, $dbh);
+    function DBCambioPermanente($anio);
+    function DBFetchArray($result);
+    function DBError($sentencia);
+    function DBBegin(&$dbh);
+    function DBCommit(&$dbh);
+    function DBRollback(&$dbh);
+    function DBSQLSelect($table, $array_atributos = null, $datos_where = null, $array_order = null, $type_order = "");
+    function DBSQLInsert($array, $table);
+    function DBSQLUpdate($datos_set, $datos_where, $table, $autocompleteNull=false);
+    function getDataBase();
 }
 ?>
