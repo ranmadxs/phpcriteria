@@ -24,7 +24,6 @@ include_once 'CriteriaEntityMgr.php';
 class Criteria extends CriteriaResult {
 
     private $dbh;
-    private $xml;
     private $array_order;
     private $type_order;
     private $SQL;
@@ -103,7 +102,7 @@ class Criteria extends CriteriaResult {
     }
 
     protected function showCreateTable($tableName){
-        $this->setSQL("SHOW CREATE TABLE ".$tableName)->execute();
+        $this->setSQL(MySQL_DB::instance()->DBSQLShowCreateTable($tableName))->execute();
         return $this->getArrayList();
     }
 

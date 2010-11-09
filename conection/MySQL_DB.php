@@ -161,6 +161,11 @@ class MySQL_DB implements DBSQLInterface {
         return $sql;
     }
 
+    public function DBSQLShowCreateTable($tableName){
+        $SQL = "SHOW CREATE TABLE ".$tableName;
+        return $SQL;
+    }
+
 }
 
 ?>
