@@ -27,7 +27,7 @@ class CriteriaEntityMgr{
         $properties = $reflection->getProperties();
         if(count($properties) > 0)
             foreach ($properties as $key => $property) {
-                $reflectionAnotatedProperty = new ReflectionAnnotatedProperty("EntityArancel", $property->getName());
+                $reflectionAnotatedProperty = new ReflectionAnnotatedProperty($className, $property->getName());
                 $Key = $reflectionAnotatedProperty->getAnnotation('Column')->Key;
                 if(strlen($Key)>0)
                     $atributes_column[] = (string) $reflectionAnotatedProperty->getAnnotation('Column')->Field;

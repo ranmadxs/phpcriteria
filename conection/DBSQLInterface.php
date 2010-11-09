@@ -21,5 +21,6 @@ interface DBSQLInterface {
     function DBSQLInsert($array, $table);
     function DBSQLUpdate($datos_set, $datos_where, $table, $autocompleteNull=false);
     function getDataBase();
+    function DBSQLShowStatus();
 }
 ?>

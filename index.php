@@ -26,29 +26,30 @@ if(isset ($_POST['button'])){
 
         case CriteriaProperty::FORM_PERSIST_LOAD:
             echo "Cargando Pruebas";
+            require_once 'generation/EntityCCA_FILIAL.php';
 //            require_once 'generation/EntityArancel.php';
+//            $criteria = new Criteria();
+//            $filial = new EntityCCA_FILIAL();
+//            $filial->ID_FILIAL = 1;
+//            $criteria->find($filial);
+//            dpr($filial);
+//            $filial->APLICACION_ACTUALIZACION = "PruebMerg2";
+//            $criteria->merge($filial);
+//            $filial->ID_FILIAL = null;
+//            $filial->APLICACION_ACTUALIZACION = "Persist";
+//            $criteria->persist($filial);
+//            $criteria = new Criteria();
+//            $criteria->createCriteria(new EntityCCA_FILIAL());
+//            dpr($criteria->lista());
 
- //           $lol = CriteriaGenerate::instance()->findFKGenerateEntity("personal");
-  //          dpr($lol);
+
 
 //            $arancel = new EntityArancel();
-            $criteria = new Criteria();
-//            $criteria->setSQL("SHOW CREATE TABLE personal")->execute();
-//            //dpr($criteria->getArrayList());
 //
-	$sql = "SELECT u.referenced_table_schema,u.referenced_table_name,u.referenced_column_name
-	FROM information_schema.table_constraints AS c
-	INNER JOIN information_schema.key_column_usage AS u USING( constraint_schema, constraint_name )
-	WHERE c.constraint_type = 'FOREIGN KEY' AND c.table_schema='baseMAS' AND c.table_name='CCA_USUARIO_INFO' ";
-
-	    $criteria->setSQL($sql)->execute();
-
 //            $criteria->setSQL("SHOW TABLE STATUS FROM baseMAS")->execute();
-            dpr($criteria->getArrayList());
-//
-//            $criteria->setSQL("SHOW TABLES")->execute();
 //            dpr($criteria->getArrayList());
 //
+
 
             
 //            $criteria->createCriteria($arancel);

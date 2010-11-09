@@ -16,4 +16,8 @@ class Column extends Annotation{
     public $Extra;
 }
 
+class JoinColumn extends Annotation{
+    public $Table;
+    public $Column;
+}
 ?>

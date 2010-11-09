@@ -98,7 +98,7 @@ class Criteria extends CriteriaResult {
     }
 
     public function getDatabaseTables() {
-        $this->setSQL("SHOW TABLE STATUS FROM ".$this->db)->execute();
+        $this->setSQL(MySQL_DB::instance()->DBSQLShowStatus())->execute();
         return $this->getArrayList();
     }
 
@@ -107,6 +107,10 @@ class Criteria extends CriteriaResult {
         return $this->getArrayList();
     }
 
+    protected function getDatabaseSchema($tableName){
+        $this->setSQL(MySQL_DB::instance()->DBSQLSchema($tableName))->execute();
+        return $this->getArrayList();
+    }
 
     public function getDescTable($tableName) {
         $this->setSQL("DESC ".$tableName)->execute();
