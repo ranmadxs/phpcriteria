@@ -1,14 +1,9 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 include_once 'Criteria.php';
 
 /**
- * Description of CriteriaGenerate
- *
+ * Description of CriteriaGenerate : <br>
+ * Esta clase es la encargada de generar los archivos de las entidades de la base de datos
  * @author edgar
  */
 class CriteriaGenerate extends Criteria {
@@ -26,9 +21,11 @@ class CriteriaGenerate extends Criteria {
         return self::$instancia;
     }
 
+    /**
+     * Función que genera los archivos de las entidades, dentro de la carpeta generation
+     */
     public function generateEntity() {
         $tables = $this->getDatabaseTables();
-        $file = CRITERIA_PATH_XML_PERSIST_GENERATED;
         $route = CRITERIA_PATH_XML_CLASS_GENERATED;
         foreach ($tables as $key => $table) {
             $writeclass = "<?php\n";
@@ -58,6 +55,12 @@ class CriteriaGenerate extends Criteria {
         }
     }
 
+    /**
+     * Función que indica si la columna es una llave foránea
+     * @param <type> $tableName
+     * @param <type> $columnName
+     * @return <type> array
+     */
     public function findFKGenerateEntity($tableName, $columnName) {
         $schemaArray = parent::getDatabaseSchema($tableName);
         foreach ($schemaArray as $key => $schema) 
@@ -68,6 +71,12 @@ class CriteriaGenerate extends Criteria {
         return null;
     }
 
+    /**
+     * Función que escribe los archivos que genera la base de datos (escribe los archivos de la entidad)
+     * @param <type> $file
+     * @param <type> $writestring
+     * @param <type> $create
+     */
     private function escribirArchivo($file, $writestring, $create = false) {
         if (file_exists($file) || $create) {
             $handle = fopen($file, "w+");

@@ -133,7 +133,6 @@ class Criteria extends CriteriaResult {
     function __construct($db = null) {        
         MySQL_DB::instance()->DBConnect($this->dbh, $db);
         $this->db = $db;
-        //$this->xml = simplexml_load_file(CRITERIA_PATH_XML_PERSIST);
     }
 
     public function begin() {
