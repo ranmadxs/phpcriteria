@@ -29,7 +29,7 @@ class CriteriaEntityMgr{
             foreach ($properties as $key => $property) {
                 $reflectionAnotatedProperty = new ReflectionAnnotatedProperty($className, $property->getName());
                 $Key = $reflectionAnotatedProperty->getAnnotation('Column')->Key;
-                if(strlen($Key)>0)
+                if(strlen($Key)>0 && $Key == "PRI")
                     $atributes_column[] = (string) $reflectionAnotatedProperty->getAnnotation('Column')->Field;
             }
         if(count($atributes_column)>0)
