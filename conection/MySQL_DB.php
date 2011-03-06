@@ -1,9 +1,4 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 include_once 'DBSQLInterface.php';
 
 /**
@@ -40,6 +35,7 @@ class MySQL_DB implements DBSQLInterface {
     }
 
     public function DBQuery($SQL_query, $dbh) {
+        mysql_select_db($this->dataBase);
         $result = mysql_query($SQL_query, $dbh) or $this->DBError($SQL_query); /* or Error(0x4) */
         return $result;
     }

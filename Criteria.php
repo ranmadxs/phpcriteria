@@ -11,7 +11,7 @@ include_once 'CriteriaEntityMgr.php';
  * Criteria es un ORM (Objeto de Modelo Relacional) que nos permite efectuar consultas
  * a la base de datos sin necesidad de efectuar consultas directas en SQL, facilitandonos
  * de esta manera el trabajo.
- * @version 1.1 07/Nov/2010
+ * @version 1.11 19/Feb/2011
  * @uses
  * $criteria = new Criteria();
  * $entity = new Entity();
@@ -90,6 +90,8 @@ class Criteria extends CriteriaResult {
                     $object_new = $this->iterateProperty($class, $object_new, $row, $properties);
                     $list[] = $object_new;
                 }
+                if(!isset ($list))
+                    $list = null;
                 $this->setList($list);
             }
         }
@@ -122,7 +124,7 @@ class Criteria extends CriteriaResult {
         else
             array_push($this->array_order, $atribute);
         $this->type_order = $type_order;
-
+        $this->SQL = MySQL_DB::instance()->DBSQLSelect($this->table, null, $this->array_restrictions, $this->array_order, $this->type_order, true);
         return $this;
     }
 

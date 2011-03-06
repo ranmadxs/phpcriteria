@@ -25,6 +25,7 @@ class CriteriaEntityMgr{
     public function findPks($className) {
         $reflection = new ReflectionAnnotatedClass($className); // by class name
         $properties = $reflection->getProperties();
+        $atributes_column = array();
         if(count($properties) > 0)
             foreach ($properties as $key => $property) {
                 $reflectionAnotatedProperty = new ReflectionAnnotatedProperty($className, $property->getName());

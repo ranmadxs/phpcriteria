@@ -1,10 +1,14 @@
 <?php
+include_once("../main_Lib.php");
 require_once 'config-inc.php';
 require_once 'CriteriaProperty.php';
 require_once 'CriteriaGenerate.php';
 require_once 'Criteria.php';
 require_once 'Restrictions.php';
-require_once 'lib/dpr_Lib.php';
+
+//exit();
+
+//require_once 'lib/dpr_Lib.php';
 //phpinfo();
 //$lol = dirname(__FILE__);
 //dpr($lol);
