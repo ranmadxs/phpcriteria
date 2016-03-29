@@ -2,7 +2,7 @@
 include_once 'MySQL_DB.php';
 
 /**
- * Esta se debe utilizar para el patrón factory
+ * Esta se debe utilizar para el patrÃ³n factory
  */
 
 

@@ -8,7 +8,7 @@ include_once 'criterion/CriteriaSpecification.php';
 include_once 'criterion/Restrictions.php';
 include_once 'criterion/Order.php';
 /**
- * Descripción de criteria <br>
+ * DescripciÃ³n de criteria <br>
  * Framework que permite abstraer la capa de persistencia de datos, modelando en objetos sus entidades.
  * Criteria es un ORM (Objeto de Modelo Relacional) que nos permite efectuar consultas
  * a la base de datos sin necesidad de efectuar consultas directas en SQL, facilitandonos
@@ -26,7 +26,7 @@ include_once 'criterion/Order.php';
 class Criteria extends CriteriaSpecification {
 
      /**
-     * Agregar una restricción para limitar los resultados a ser recuperados
+     * Agregar una restricciÃ³n para limitar los resultados a ser recuperados
      * @param Restrictions $restrictions
      * @return Criteria $this
      */

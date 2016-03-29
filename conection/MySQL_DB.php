@@ -24,7 +24,7 @@ class MySQL_DB implements DBSQLInterface {
 
     public function DBConnect(&$dbh, &$db = null) {
 
-        $dbh = mysql_connect(CRITERIA_DB_HOST, CRITERIA_DB_USER, CRITERIA_DB_PASSWORD) or die('No se puede conectar a la base de datos, la razón es: ' . mysql_error());
+        $dbh = mysql_connect(CRITERIA_DB_HOST, CRITERIA_DB_USER, CRITERIA_DB_PASSWORD) or die('No se puede conectar a la base de datos, la razÃ³n es: ' . mysql_error());
         if ($db != null) {
             mysql_select_db($db);
             $this->dataBase = $db;

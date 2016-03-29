@@ -10,7 +10,7 @@ require_once 'utils/LoadDirectory.php';
 ?>
 
 <div align="center">
-    <strong>PHPCriteria 1.02 (30-05-2013)</strong>
+    <strong>PHPCriteria 1.03 (29-03-2016)</strong>
 </div>
 <?php
 
@@ -112,7 +112,7 @@ if (isset($_POST['button'])) {
             }
         ?>
     </select>
-    <input type="submit" name="button" value="GENERAR_ENTIDADES" onclick="return confirm('Al generar entidades se borran todos los archivos de la carpeta generation \n ¿Esta seguro que desea Borrar Todo?')" />
+    <input type="submit" name="button" value="GENERAR_ENTIDADES" onclick="return confirm('Al generar entidades se borran todos los archivos de la carpeta generation \n Â¿Esta seguro que desea Borrar Todo?')" />
     <hr>
     <br>
     <input type="submit" name="button" value="CARGAR_PRUEBAS" />

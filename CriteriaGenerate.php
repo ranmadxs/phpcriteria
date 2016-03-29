@@ -13,7 +13,7 @@ class CriteriaGenerate extends Criteria {
     }
 
     /**
-     * Función que genera los archivos de las entidades, dentro de la carpeta generation
+     * FunciÃ³n que genera los archivos de las entidades, dentro de la carpeta generation
     */
     public function generateEntity() {	
         $tables = $this->getDatabaseTables();
@@ -48,7 +48,7 @@ class CriteriaGenerate extends Criteria {
     }
 
     /**
-     * Función que indica si la columna es una llave foránea
+     * FunciÃ³n que indica si la columna es una llave forÃ¡nea
      * @param <type> $tableName
      * @param <type> $columnName
      * @return <type> array
@@ -64,7 +64,7 @@ class CriteriaGenerate extends Criteria {
     }
 
     /**
-     * Función que escribe los archivos que genera la base de datos (escribe los archivos de la entidad)
+     * FunciÃ³n que escribe los archivos que genera la base de datos (escribe los archivos de la entidad)
      * @param <type> $file
      * @param <type> $writestring
      * @param <type> $create
@@ -78,7 +78,7 @@ class CriteriaGenerate extends Criteria {
             }
             fclose($handle);
         } else {
-            throw new Exception("El archivo no exíste en la ruta " . $file);
+            throw new Exception("El archivo no exÃ­ste en la ruta " . $file);
         }
     }
 

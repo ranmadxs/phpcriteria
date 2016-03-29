@@ -9,14 +9,10 @@ require_once 'utils/LoadPersistence.php';
 ##############################################################
 ########### DATABASE PHP CRITERIA ###########################
 #############################################################
-define("CRITERIA_DB_HOST", "localhost");
-define("CRITERIA_DB_USER", "root");
-define("CRITERIA_DB_PASSWORD", "epsilon1");
-define("CRITERIA_DB_DEFAUTL", "py-farm");
-//define("CRITERIA_DB_HOST", DB_HOST);
-//define("CRITERIA_DB_USER", DB_USER);
-//define("CRITERIA_DB_PASSWORD", DB_PASSWORD);
-//define("CRITERIA_DB_DEFAUTL", DB_DEFAUTL);
+define("CRITERIA_DB_HOST", DB_HOST);
+define("CRITERIA_DB_USER", DB_USER);
+define("CRITERIA_DB_PASSWORD", DB_PASSWORD);
+define("CRITERIA_DB_DEFAUTL", DB_DEFAUTL);
 ##############################################################
 ############ TYPE DB PHP CRITERIA ############################
 ##############################################################
