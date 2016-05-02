@@ -145,12 +145,20 @@ class Criteria extends CriteriaSpecification {
         $this->db = $db;
     }
 
+    /**
+     * Inicia una transacción
+     * @return Criteria
+     */
     public function begin() {
         MySQL_DB::instance()->DBBegin($this->dbh);
         //DBBegin($this->dbh);
         return $this;
     }
 
+    /**
+     * Cierra una transacción
+     * @return Criteria
+     */
     public function commit() {
         MySQL_DB::instance()->DBCommit($this->dbh);
         return $this;

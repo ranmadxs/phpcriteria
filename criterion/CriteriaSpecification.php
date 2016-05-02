@@ -105,7 +105,7 @@ class CriteriaSpecification {
     protected $objectClass;
 
     /**
-     * Función que retorna el resultado de la query en un arreglo
+     * FunciÃ³n que retorna el resultado de la query en un arreglo
      * @return Array
     */
     public function getArrayList() {
@@ -141,7 +141,7 @@ class CriteriaSpecification {
     }
 
     /*
-     * Función que retorna un objeto único
+     * Funciï¿½n que retorna un objeto ï¿½nico
      * @return Object
      */
     public function uniqueResult(){
@@ -149,7 +149,7 @@ class CriteriaSpecification {
     }
 
     /*
-     * Función que retorna un arreglo de objetos
+     * Funciï¿½n que retorna un arreglo de objetos
      * @return Array[Object]
      */
     public function listResult(){
